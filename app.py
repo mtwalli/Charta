@@ -10,9 +10,10 @@ from langchain.chains.conversational_retrieval.base import ConversationalRetriev
 import pandas as pd
 
 def get_pdf_text(files):
+    print(files)
     raw_text = ""
     for file in files:
-        doc = pymupdf.open(file)
+        doc = pymupdf.open(stream=file.read(), filetype="pdf")
         for page in doc:
             raw_text += page.get_text()
     return raw_text
