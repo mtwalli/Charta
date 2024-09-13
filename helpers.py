@@ -2,6 +2,7 @@ import pymupdf
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
+from langchain_ollama.llms import OllamaLLM
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.memory import ConversationBufferMemory
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
@@ -62,9 +63,11 @@ def get_chain(vectorstore):
     - chain: A ConversationalRetrievalChain object.
 
     """
-    llm = ChatOpenAI(
-       # model="gpt-4o"
-    )
+    # llm = ChatOpenAI(
+    #    # model="gpt-4o"
+    # )
+    llm = OllamaLLM(model="llama3.1")
+
     # llm = HuggingFaceHub(repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":512})
 
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
