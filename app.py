@@ -10,6 +10,15 @@ from langchain.chains.conversational_retrieval.base import ConversationalRetriev
 import pandas as pd
 
 def get_pdf_text(files):
+    """
+    Extracts the text content from a list of PDF files.
+
+    Args:
+        files (list): A list of file objects representing PDF files.
+
+    Returns:
+        str: The concatenated text content from all the pages of the PDF files.
+    """
     print(files)
     raw_text = ""
     for file in files:
@@ -19,6 +28,16 @@ def get_pdf_text(files):
     return raw_text
 
 def get_text_chunks(raw_text):
+    """
+    Splits the given raw text into chunks of specified size.
+
+    Args:
+        raw_text (str): The raw text to be split into chunks.
+
+    Returns:
+        list: A list of text chunks.
+
+    """
     character_text_splitter = CharacterTextSplitter(
         separator="\n",
         chunk_size=1000,
@@ -35,6 +54,16 @@ def get_vector_store(text_chunks):
     return FAISS.from_texts(text_chunks, embeddings)
 
 def get_chain(vectorstore):
+    """
+    Returns a ConversationalRetrievalChain object initialized with the given parameters.
+
+    Parameters:
+    - vectorstore: The vectorstore used as a retriever for the ConversationalRetrievalChain.
+
+    Returns:
+    - chain: A ConversationalRetrievalChain object.
+
+    """
     llm = ChatOpenAI()
     # llm = HuggingFaceHub(repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":512})
 
@@ -47,6 +76,16 @@ def get_chain(vectorstore):
     return chain
 
 def handle_question(user_question):
+    """
+    Handles a user question and generates a response.
+
+    Parameters:
+    user_question (str): The question asked by the user.
+
+    Returns:
+    None
+    """
+
     response = st.session_state.chain({'question': user_question})
     st.session_state.chat_history = response['chat_history']
 
@@ -63,6 +102,15 @@ def handle_question(user_question):
                 st.markdown(message.content)
 
 def get_data_frame(vector_store):
+    """
+    Converts a Faiss vector store into a pandas DataFrame.
+
+    Args:
+        vector_store (faiss.vector_store): The Faiss vector store.
+
+    Returns:
+        pandas.DataFrame: The DataFrame containing the vectors from the vector store.
+    """
     faiss_index = vector_store.index
     num_vectors = faiss_index.ntotal
     vectors = [faiss_index.reconstruct(i) for i in range(num_vectors)]
