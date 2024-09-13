@@ -1,5 +1,5 @@
 import streamlit as st
-from PyPDF2 import PdfReader
+import pymupdf
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -9,12 +9,12 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
 import pandas as pd
 
-def get_pdf_text(docs):
+def get_pdf_text(files):
     raw_text = ""
-    for doc in docs:
-        pdf_reader = PdfReader(doc)
-        for page in pdf_reader.pages:
-            raw_text += page.extract_text()
+    for file in files:
+        doc = pymupdf.open(file)
+        for page in doc:
+            raw_text += page.get_text()
     return raw_text
 
 def get_text_chunks(raw_text):
