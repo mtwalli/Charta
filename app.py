@@ -44,14 +44,11 @@ def main():
 
     if "chat_history" not in st.session_state: 
         st.session_state.chat_history = None
-
-    st.header("Charta :sparkles:")
-    st.markdown("Charta is a conversational AI that can help you understand the content of your documents. Upload your PDFs and ask questions about the content.")
-
     
-    left, right = st.columns(2, gap='large')
-
-    with left:
+    st.header(":blue[_Charta_] :sparkles:")
+    st.markdown(":blue[Charta] is a conversational AI that can help you understand the content of your documents. Upload your PDFs and ask questions about the content.")
+    
+    with st.sidebar:
         st.subheader("Documents")
         pdf_docs = st.file_uploader(
             "Upload your PDFs here and click on 'Start'", accept_multiple_files=True, type=["pdf"])
@@ -80,13 +77,13 @@ def main():
                 # create chain
                 st.session_state.chain = get_chain(vectorstore)
 
-    with right:
-        if st.session_state.chain:
-            st.subheader("Chat with Charta")
-            user_question = st.chat_input("Ask a question")
-            if user_question:
-                with st.spinner("Thinking..."):
-                    answer_question(user_question)          
+  
+    if st.session_state.chain:
+        st.subheader("Chat with Charta")
+        user_question = st.chat_input("Ask a question")
+        if user_question:
+            with st.spinner("Thinking..."):
+                answer_question(user_question)          
 
 if __name__ == "__main__":
     main()
