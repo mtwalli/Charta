@@ -1,4 +1,4 @@
-# Charta ✨
+# `Charta ✨`
 
 `Charta ✨` is a demo of conversational AI that can help you understand the content of your documents. Upload your PDFs and ask questions about the content.
 
