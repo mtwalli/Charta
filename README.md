@@ -5,11 +5,11 @@
 
 ## How to run the project? 
 1- Create a virtual python environment:
-```python
+```sh
 python3 -m venv env
 ```
 2- Activate the created environment:
-```python
+```sh
 source env/bin/activate
 ```
 3- Install the required dependencies:
@@ -17,12 +17,12 @@ source env/bin/activate
 pip install -r requirements.txt
 ```
 4- Create a `.env` file and add the API keys as follows:
-```python
+```.env
 OPENAI_API_KEY="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" # placeholder add your real key
 HUGGINGFACEHUB_API_TOKEN="hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" # placeholder add your real key
 ```
 5- Run the app:
-```python
+```sh
 streamlit run app.py
 ```
 
