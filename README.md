@@ -27,3 +27,6 @@ streamlit run app.py
 ```
 
 Upload your files and start chating with them 🙂
+
+> [!NOTE]  
+> To use open-source models via [Ollama](https://ollama.com/), first install Ollama, and then download the necessary models.
