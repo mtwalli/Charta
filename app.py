@@ -27,12 +27,12 @@ def answer_question(user_question):
             avatar = None
             if type(message).__name__ == 'HumanMessage': 
                 role = "human" 
-                avatar = "person"
+                avatar = "user"
             else: 
                 role = "assistant"
-                avatar = "robot_2"
+                avatar = "ai"
 
-            with st.chat_message(name=role, avatar=f":material/{avatar}:"):
+            with st.chat_message(name=role, avatar=f"assets/{avatar}.png"):
                 st.markdown(message.content)
 
 def main():
