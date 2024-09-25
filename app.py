@@ -45,8 +45,8 @@ def main():
     if "chat_history" not in st.session_state: 
         st.session_state.chat_history = None
     
-    st.header(":blue[_Charta_] :sparkles:")
-    st.markdown(":blue[Charta] is a conversational AI that can help you understand the content of your documents. Upload your PDFs and ask questions about the content.")
+    st.header("Charta :green[`>`] ")
+    st.markdown("_Charta :green[`>`] is a conversational AI that can help you navigate through your documents. Upload your :violet[PDFs] and start chatting with :violet[them]._")
     
     with st.sidebar:
         st.subheader("Documents")
