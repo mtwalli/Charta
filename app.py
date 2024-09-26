@@ -25,7 +25,7 @@ def answer_question(user_question):
         for i,message in enumerate(st.session_state.chat_history):
             role = None
             avatar = None
-            if type(message).__name__ == 'HumanMessage': 
+            if 'HumanMessage' in str(type(message)): 
                 role = "human" 
                 avatar = "user"
             else: 
@@ -51,9 +51,9 @@ def main():
     with st.sidebar:
         st.subheader("Documents")
         pdf_docs = st.file_uploader(
-            "Upload your PDFs here and click on 'Start'", accept_multiple_files=True, type=["pdf"])
+            "Upload your PDFs here ", accept_multiple_files=True, type=["pdf"])
         
-        if st.button("Start", disabled=len(pdf_docs) == 0):
+        if len(pdf_docs) != 0 and st.session_state.chain is None:
             with st.spinner("Processing"):
                 # get pdf text
                 raw_text = get_pdf_text(pdf_docs).strip()
