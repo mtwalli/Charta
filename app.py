@@ -86,4 +86,7 @@ def main():
                 answer_question(user_question)          
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
