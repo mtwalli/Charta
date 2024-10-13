@@ -46,7 +46,15 @@ with gr.Blocks(theme=gr.themes.Ocean()) as demo:
             process.click(process_pdf,inputs=file_uplaod, outputs= gr.Label(label="Processing status"))
 
         with gr.Column(scale=2):
-            gr.ChatInterface(fn=bot, type="messages", examples=["What is the document about?", "Give me a short summary about the document?", "Give me the main the topics mentioned in the document?"], title="✨")
+            gr.ChatInterface(fn=bot,
+                             type="messages",
+                             
+                             examples=["What is the document about?",
+                                                        "Give me a short summary?",
+                                                        "Give me the main the topics?"
+                                                        ],
+                             chatbot=gr.Chatbot(label="Charta ✨",type="messages"),
+                             )
 
 if __name__ == "__main__":
     load_dotenv()
