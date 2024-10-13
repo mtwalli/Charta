@@ -18,10 +18,29 @@ def get_pdf_text(files):
     Returns:
         str: The concatenated text content from all the pages of the PDF files.
     """
-    print(files)
     raw_text = ""
     for file in files:
         doc = pymupdf.open(stream=file.read(), filetype="pdf")
+        for page in doc:
+            raw_text += page.get_text()
+    return raw_text
+
+def get_text(files):
+    """
+    Extracts the text content from a list of PDF files.
+
+    Args:
+        files (list): A list of file objects representing PDF files.
+
+    Returns:
+        str: The concatenated text content from all the pages of the PDF files.
+    """
+    raw_text = ""
+    if not files: 
+        return raw_text
+     
+    for file in files:
+        doc = pymupdf.open(file)
         for page in doc:
             raw_text += page.get_text()
     return raw_text
