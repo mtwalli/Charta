@@ -28,16 +28,20 @@ def process_pdf(files,progress_gr=gr.Progress()):
     global chain
     chain = get_chain(vector_store)
 
-    return "Proccessing completed"     
+    return "Completed 🎉"     
 
 def bot(message , history):
     response = chain.invoke(message)
-    return response['chat_history'][-1].content
+    reponse_message = ""
+    for character in response['chat_history'][-1].content:
+            reponse_message += character
+            time.sleep(0.01)
+            yield reponse_message 
 
 
 with gr.Blocks(theme=gr.themes.Ocean()) as demo:
     gr.Markdown("# Charta ✨")
-    gr.Markdown("Charta ✨ is a conversational AI that can help you navigate through your documents. Upload your PDFs and start chatting with them.")
+    gr.Markdown("_Charta_ is a conversational AI that can help you navigate through your documents. Upload your PDFs and start chatting with them.")
 
     with gr.Row():
         with gr.Column(scale=1):
