@@ -47,7 +47,7 @@ with gr.Blocks(theme=gr.themes.Ocean()) as demo:
         with gr.Column(scale=1):
             file_uplaod = gr.File(interactive=True, label="Documents", file_count="multiple")
             process = gr.Button("Process",size="sm", variant="primary")
-            process.click(process_pdf,inputs=file_uplaod, outputs= gr.Label(label="Processing status"))
+            process.click(process_pdf,inputs=file_uplaod, outputs= gr.Text(label="Processing status"))
 
         with gr.Column(scale=2):
             gr.ChatInterface(
