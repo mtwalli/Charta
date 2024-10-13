@@ -24,20 +24,15 @@ def process_pdf(files,progress_gr=gr.Progress()):
     vector_store = get_vector_store(chuncks)
     
     progress_gr(progress=1,desc="Preparing chain")
+    
+    global chain
     chain = get_chain(vector_store)
 
     return "Processed"     
 
-def user(user_message, history: list):
-     return "", history + [{"role": "user", "content": user_message}]
-
-def bot(history: list):
-    bot_message = random.choice(["How are you?", "I love you", "I'm very hungry"])
-    history.append({"role": "assistant", "content": ""})
-    for character in bot_message:
-        history[-1]['content'] += character
-        time.sleep(0.05)
-        yield history
+def bot(message , history):
+    response = chain.invoke(message)
+    return response['chat_history'][-1].content
 
 
 with gr.Blocks(theme=gr.themes.Ocean()) as demo:
@@ -51,9 +46,7 @@ with gr.Blocks(theme=gr.themes.Ocean()) as demo:
             process.click(process_pdf,inputs=file_uplaod, outputs= gr.Label(label="Processing status"))
 
         with gr.Column(scale=2):
-            chatbot = gr.Chatbot(label="✨",type="messages")
-            msg = gr.Textbox(label="Ask a question", lines=1, placeholder="Type here...")
-            msg.submit(user, [msg, chatbot], [msg, chatbot], queue=False).then( bot, chatbot, chatbot)
+            gr.ChatInterface(fn=bot, type="messages", examples=["What is the document about?", "Give me a short summary about the document?", "Give me the main the topics mentioned in the document?"], title="✨")
 
 if __name__ == "__main__":
     load_dotenv()
