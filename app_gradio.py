@@ -28,7 +28,7 @@ def process_pdf(files,progress_gr=gr.Progress()):
     global chain
     chain = get_chain(vector_store)
 
-    return "Processed"     
+    return "Proccessing completed"     
 
 def bot(message , history):
     response = chain.invoke(message)
@@ -46,15 +46,16 @@ with gr.Blocks(theme=gr.themes.Ocean()) as demo:
             process.click(process_pdf,inputs=file_uplaod, outputs= gr.Label(label="Processing status"))
 
         with gr.Column(scale=2):
-            gr.ChatInterface(fn=bot,
-                             type="messages",
-                             
-                             examples=["What is the document about?",
-                                                        "Give me a short summary?",
-                                                        "Give me the main the topics?"
-                                                        ],
-                             chatbot=gr.Chatbot(label="Charta ✨",type="messages"),
-                             )
+            gr.ChatInterface(
+                fn=bot,
+                type="messages",    
+                examples=[
+                    "What is the document about?",
+                    "Give me a short summary?",
+                    "Give me the main the topics?"
+                    ],
+                    chatbot=gr.Chatbot(label="Charta ✨",type="messages"),
+                    )
 
 if __name__ == "__main__":
     load_dotenv()
