@@ -1,5 +1,4 @@
 import gradio as gr
-import random
 import time
 from dotenv import load_dotenv
 from helpers import (get_text,
