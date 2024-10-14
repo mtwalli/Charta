@@ -21,9 +21,14 @@ pip install -r requirements.txt
 OPENAI_API_KEY="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" # placeholder add your real key
 HUGGINGFACEHUB_API_TOKEN="hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" # placeholder add your real key
 ```
-5- Run the app:
+5- Run `streamlit` app:
 ```sh
-streamlit run app.py
+streamlit run src/streamlit_app.py
+```
+
+6- Run `gradio` app:
+```sh
+gradio src/gradio_app.py
 ```
 
 Upload your files and start chating with them 🙂
