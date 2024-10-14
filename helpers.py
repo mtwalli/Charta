@@ -65,13 +65,12 @@ def get_text_chunks(raw_text):
     chunks = character_text_splitter.split_text(raw_text)
     return chunks
 
-def get_vector_store(text_chunks):
-    #embeddings = OpenAIEmbeddings()
-    embeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-m3")
-    # embeddings = HuggingFaceEmbeddings(model_name="nvidia/NV-Embed-v2")
+def get_vector_store(text_chunks, model="BAAI/bge-m3"):
+    embeddings = HuggingFaceEmbeddings(model_name=model)
+    if model == "text-embedding-3": embeddings = OpenAIEmbeddings(model)
     return FAISS.from_texts(text_chunks, embeddings)
 
-def get_chain(vectorstore):
+def get_chain(vectorstore, model="gpt-4o"):
     """
     Returns a ConversationalRetrievalChain object initialized with the given parameters.
 
@@ -82,11 +81,12 @@ def get_chain(vectorstore):
     - chain: A ConversationalRetrievalChain object.
 
     """
-    llm = ChatOpenAI(model="gpt-4o")
 
-    #llm = OllamaLLM(model="gemma2:9b") 
-    #llm = OllamaLLM(model="llama3.1")
-    
+    if model == "gpt-4o":
+        llm = ChatOpenAI(model="gpt-4o")
+    else:
+        llm = OllamaLLM(model=model)
+            
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
     chain = ConversationalRetrievalChain.from_llm(
         llm=llm,
