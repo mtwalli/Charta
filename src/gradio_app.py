@@ -6,12 +6,14 @@ from helpers import (get_text,
                      get_vector_store, 
                      get_chain)
 from  dotenv import load_dotenv
+from pathlib import Path
 
 
 chain = None
 
 def process_pdf(files,embedding_model="BAAI/bge-m3",llm_mdel="gpt-4o",progress_gr=gr.Progress()):
-    print(f"Files:{files}, Embedding model:{embedding_model}, LLM model:{llm_mdel}")
+    file_names = [Path(file).name for file in files]
+    print(f"Files:{file_names}, Embedding model:{embedding_model}, LLM model:{llm_mdel}")
     progress_gr(progress=0.25,desc="Reading text")
     text = get_text(files)
    
@@ -26,7 +28,7 @@ def process_pdf(files,embedding_model="BAAI/bge-m3",llm_mdel="gpt-4o",progress_g
     global chain
     chain = get_chain(vector_store,model=llm_mdel)
 
-    return "Completed 🎉"     
+    return "Completed!"     
 
 def bot(message , history):
     response = chain.invoke(message)
@@ -43,14 +45,15 @@ with gr.Blocks(theme=gr.themes.Ocean()) as demo:
 
     with gr.Row():
         with gr.Column(scale=1):
-            embedding_model_choice = gr.Dropdown(["BAAI/bge-m3","text-embedding-3"], label="Embedding model")
-            llm_model_choice = gr.Dropdown(["gpt-4o","llama3.1","gemma2:9b"], label="LLM model")
+            embedding_model_choice = gr.Dropdown(["BAAI/bge-m3","text-embedding-3"], label="Select the embedding model")
+            llm_model_choice = gr.Dropdown(["gpt-4o","llama3.1","gemma2:9b"], label="Select the LLM model")
             file_uplaod = gr.File(interactive=True, label="Documents", file_count="multiple")
             status = gr.Text(label="Processing status")
+            
             with gr.Group():
-                with gr.Row():
-                    clear_btn = gr.Button("Clear",size="sm", variant="secondary")
-                    process_btn = gr.Button("Process",size="sm", variant="primary")
+                with gr.Column():
+                    process_btn = gr.Button("Process",size="lg", variant="primary")
+                    clear_btn = gr.Button("Clear",size="lg", variant="secondary")
     
         with gr.Column(scale=2):
             chat = gr.Chatbot(label="Charta ✨",type="messages")
