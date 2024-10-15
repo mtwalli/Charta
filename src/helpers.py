@@ -18,10 +18,29 @@ def get_pdf_text(files):
     Returns:
         str: The concatenated text content from all the pages of the PDF files.
     """
-    print(files)
     raw_text = ""
     for file in files:
         doc = pymupdf.open(stream=file.read(), filetype="pdf")
+        for page in doc:
+            raw_text += page.get_text()
+    return raw_text
+
+def get_text(files):
+    """
+    Extracts the text content from a list of PDF files.
+
+    Args:
+        files (list): A list of file objects representing PDF files.
+
+    Returns:
+        str: The concatenated text content from all the pages of the PDF files.
+    """
+    raw_text = ""
+    if not files: 
+        return raw_text
+     
+    for file in files:
+        doc = pymupdf.open(file)
         for page in doc:
             raw_text += page.get_text()
     return raw_text
@@ -46,13 +65,12 @@ def get_text_chunks(raw_text):
     chunks = character_text_splitter.split_text(raw_text)
     return chunks
 
-def get_vector_store(text_chunks):
-    #embeddings = OpenAIEmbeddings()
-    embeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-m3")
-    # embeddings = HuggingFaceEmbeddings(model_name="nvidia/NV-Embed-v2")
+def get_vector_store(text_chunks, model="BAAI/bge-m3"):
+    embeddings = HuggingFaceEmbeddings(model_name=model)
+    if model == "text-embedding-3": embeddings = OpenAIEmbeddings(model)
     return FAISS.from_texts(text_chunks, embeddings)
 
-def get_chain(vectorstore):
+def get_chain(vectorstore, model="gpt-4o"):
     """
     Returns a ConversationalRetrievalChain object initialized with the given parameters.
 
@@ -63,11 +81,12 @@ def get_chain(vectorstore):
     - chain: A ConversationalRetrievalChain object.
 
     """
-    llm = ChatOpenAI(model="gpt-4o")
 
-    #llm = OllamaLLM(model="gemma2:9b") 
-    #llm = OllamaLLM(model="llama3.1")
-    
+    if model == "gpt-4o":
+        llm = ChatOpenAI(model="gpt-4o")
+    else:
+        llm = OllamaLLM(model=model)
+            
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
     chain = ConversationalRetrievalChain.from_llm(
         llm=llm,
