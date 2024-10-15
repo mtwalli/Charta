@@ -55,7 +55,7 @@ with gr.Blocks(theme=gr.themes.Ocean()) as demo:
             - Click the `Process` button.
             - Begin chatting with your documents.
             
-            > **_NOTE:_** Click the `Clear` button to reset.
+            > **_NOTE:_** Click the `Reset` button to reset.
             """
         )
 
@@ -69,7 +69,7 @@ with gr.Blocks(theme=gr.themes.Ocean()) as demo:
             with gr.Group():
                 with gr.Column():
                     process_btn = gr.Button("Process",size="sm", variant="primary")
-                    clear_btn = gr.Button("Clear",size="sm", variant="secondary")
+                    reset_btn = gr.Button("Reset",size="sm", variant="secondary")
     
         with gr.Column(scale=2):
             chat = gr.Chatbot(label="Charta ✨",type="messages")
@@ -85,7 +85,7 @@ with gr.Blocks(theme=gr.themes.Ocean()) as demo:
                     )
         
         process_btn.click(process_pdf,inputs=[file_uplaod,embedding_model_choice,llm_model_choice], outputs=status) 
-        clear_btn.click(
+        reset_btn.click(
             lambda: [
                 None,
                 "BAAI/bge-m3",
