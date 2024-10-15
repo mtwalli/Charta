@@ -40,8 +40,24 @@ def bot(message , history):
 
 
 with gr.Blocks(theme=gr.themes.Ocean()) as demo:
-    gr.Markdown("# Charta ✨")
-    gr.Markdown("_Charta_ is a conversational AI that can help you navigate through your documents. Upload your PDFs and start chatting with them.")
+    gr.Markdown(
+        """
+        # Charta ✨ 
+        _Charta_ is a conversational AI that can help you navigate through your documents. Upload your PDFs and start chatting with them.
+        """
+        )
+    with gr.Accordion(label="Instructions", open=False):
+        gr.Markdown(
+            """
+            - Choose an `embedding` model.
+            - Choose an `LLM` model.
+            - Upload your PDF files.
+            - Click the `Process` button.
+            - Begin chatting with your documents.
+            
+            > **_NOTE:_** Click the `Clear` button to reset.
+            """
+        )
 
     with gr.Row():
         with gr.Column(scale=1):
@@ -52,8 +68,8 @@ with gr.Blocks(theme=gr.themes.Ocean()) as demo:
             
             with gr.Group():
                 with gr.Column():
-                    process_btn = gr.Button("Process",size="lg", variant="primary")
-                    clear_btn = gr.Button("Clear",size="lg", variant="secondary")
+                    process_btn = gr.Button("Process",size="sm", variant="primary")
+                    clear_btn = gr.Button("Clear",size="sm", variant="secondary")
     
         with gr.Column(scale=2):
             chat = gr.Chatbot(label="Charta ✨",type="messages")
