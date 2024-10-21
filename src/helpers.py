@@ -66,8 +66,12 @@ def get_text_chunks(raw_text):
     return chunks
 
 def get_vector_store(text_chunks, model="BAAI/bge-m3"):
-    embeddings = HuggingFaceEmbeddings(model_name=model)
-    if model == "text-embedding-3": embeddings = OpenAIEmbeddings(model)
+
+    if model == "text-embedding-3-large": 
+        embeddings = OpenAIEmbeddings(model=model)
+    else: 
+        embeddings = HuggingFaceEmbeddings(model_name=model)
+    
     return FAISS.from_texts(text_chunks, embeddings)
 
 def get_chain(vectorstore, model="gpt-4o"):
@@ -82,10 +86,10 @@ def get_chain(vectorstore, model="gpt-4o"):
 
     """
 
-    if model == "gpt-4o":
-        llm = ChatOpenAI(model="gpt-4o")
+    if model.startswith("gpt"):
+        llm = ChatOpenAI(model=model)
     else:
-        llm = OllamaLLM(model=model)
+        llm = OllamaLLM(model=model) # Make sure to install the model using `ollama install` before using it.
             
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
     chain = ConversationalRetrievalChain.from_llm(

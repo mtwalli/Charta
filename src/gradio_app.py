@@ -61,15 +61,29 @@ with gr.Blocks(theme=gr.themes.Ocean()) as demo:
 
     with gr.Row():
         with gr.Column(scale=1):
-            embedding_model_choice = gr.Dropdown(["BAAI/bge-m3","text-embedding-3"], label="Select the embedding model")
-            llm_model_choice = gr.Dropdown(["gpt-4o","llama3.1","gemma2:9b"], label="Select the LLM model")
+            embedding_models = ["BAAI/bge-m3","text-embedding-3-large"]
+            embedding_model_choice = gr.Dropdown(
+                value=embedding_models[0],
+                choices=embedding_models,
+                interactive=True,
+                label="Select the embedding model"
+                )
+            
+            llm_models = ["gpt-4o","llama3.2","gemma2:9b"]
+            llm_model_choice = gr.Dropdown(
+                value=llm_models[0],
+                choices=llm_models,
+                interactive=True,
+                label="Select the LLM model"
+                )
+            
             file_uplaod = gr.File(interactive=True, label="Documents", file_count="multiple")
             status = gr.Text(label="Processing status")
             
             with gr.Group():
                 with gr.Column():
-                    process_btn = gr.Button("Process",size="sm", variant="primary")
-                    reset_btn = gr.Button("Reset",size="sm", variant="secondary")
+                    process_btn = gr.Button("Process",size="lg", variant="primary")
+                    reset_btn = gr.Button("Reset",size="lg", variant="secondary")
     
         with gr.Column(scale=2):
             chat = gr.Chatbot(label="Charta ✨",type="messages")
